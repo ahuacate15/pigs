@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Pigs</string>
+
+    <string name="title_fragment_home">Inicio</string>
+    <string name="title_fragment_setting">Ajustes</string>
+    <string name="title_fragment_about">Acerca de</string>
 </resources>
