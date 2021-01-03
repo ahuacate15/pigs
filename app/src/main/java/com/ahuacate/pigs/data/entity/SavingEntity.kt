@@ -9,14 +9,17 @@ class SavingEntity(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id_saving")
-    var idSaving : Integer,
+    var idSaving : Integer? = null,
 
     @ColumnInfo(name = "title")
-    val title : String,
+    var title : String? = null,
 
     @ColumnInfo(name = "real_amount")
-    val realAmount : Double,
+    var realAmount : Double? = null,
 
     @ColumnInfo(name = "aprox_amount")
-    val aproxAmount : Double
+    var aproxAmount : Double? = null,
+
+    @ColumnInfo(name = "description")
+    var description : String? = null
 )

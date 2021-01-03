@@ -15,4 +15,6 @@ interface SavingDao {
     @Insert
     suspend fun insert(savingEntity: SavingEntity)
 
+    @Query("DELETE FROM saving")
+    suspend fun deleteAll()
 }
