@@ -1,7 +1,6 @@
 package com.ahuacate.pigs.ui.saving
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,19 +13,14 @@ import com.ahuacate.pigs.R
 import com.ahuacate.pigs.data.PiggyApplication
 import com.ahuacate.pigs.data.model.SavingViewModel
 import com.ahuacate.pigs.data.model.SavingViewModelFactory
-import kotlinx.android.synthetic.main.fragment_saving.*
 
-class SavingListFragment : Fragment() {
+class SavingListFragment : Fragment()  {
 
     private val TAG : String = "SavingListFragment"
     private lateinit var adapter : SavingListAdapter
 
     private val savingViewModel : SavingViewModel by viewModels {
         SavingViewModelFactory((activity?.application as PiggyApplication).repository)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -47,6 +41,8 @@ class SavingListFragment : Fragment() {
         savingViewModel.allSaving.observe(viewLifecycleOwner, Observer {
             listSaving -> adapter.setData(listSaving)
         })
+
         return view
     }
+
 }
