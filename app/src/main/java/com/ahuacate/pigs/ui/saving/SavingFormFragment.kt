@@ -1,14 +1,13 @@
 package com.ahuacate.pigs.ui.saving
 
 import android.os.Bundle
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.ahuacate.pigs.R
@@ -16,15 +15,14 @@ import com.ahuacate.pigs.data.PiggyApplication
 import com.ahuacate.pigs.data.entity.SavingEntity
 import com.ahuacate.pigs.data.model.SavingViewModel
 import com.ahuacate.pigs.data.model.SavingViewModelFactory
-import java.math.BigInteger
+import kotlinx.android.synthetic.main.fragment_saving_form.view.*
 
-class SavingFormFragment : DialogFragment(), View.OnClickListener, View.OnFocusChangeListener {
+class SavingFormFragment : DialogFragment(), View.OnClickListener {
 
     lateinit var bSaveForm : Button
     lateinit var iCloseForm : ImageView
     lateinit var tTitleForm : TextView
     lateinit var tRealAmount : TextView
-    lateinit var tAproxAmount : TextView
     lateinit var tDescriptionForm : TextView
 
     val TAG : String = "SavingFormFragment"
@@ -50,13 +48,11 @@ class SavingFormFragment : DialogFragment(), View.OnClickListener, View.OnFocusC
         iCloseForm = view.findViewById(R.id.iCloseForm)
         tTitleForm = view.findViewById(R.id.tTitleForm)
         tRealAmount = view.findViewById(R.id.tRealAmount)
-        tAproxAmount = view.findViewById(R.id.tAproxAmount)
         tDescriptionForm = view.findViewById(R.id.tDescriptionForm)
 
         /* set event of elements */
         iCloseForm.setOnClickListener(this)
         bSaveForm.setOnClickListener(this)
-        tRealAmount.onFocusChangeListener = this
         return view
     }
 
@@ -66,30 +62,36 @@ class SavingFormFragment : DialogFragment(), View.OnClickListener, View.OnFocusC
                 dialog?.dismiss()
             }
             R.id.bSaveForm -> {
-                savingViewModel.insert(getEntityFromUI())
-                dialog?.dismiss()
+                val entity : SavingEntity? = getEntityFromUI()
+                if(entity != null) {
+                    savingViewModel.insert(entity)
+                    dialog?.dismiss()
+                }
             }
         }
     }
 
-    private fun getEntityFromUI() : SavingEntity {
+    private fun getEntityFromUI() : SavingEntity? {
+
+        if(tTitleForm.text.isEmpty()) {
+            Toast.makeText(context, "Ingresa el titulo", Toast.LENGTH_SHORT).show()
+            return null;
+        }
+
+        if(tRealAmount.text.isEmpty()) {
+            Toast.makeText(context, "Ingresa la cantidad", Toast.LENGTH_SHORT).show()
+            return null;
+        }
+
         val title : String = tTitleForm.text.toString()
-        val realAmount : Int = tRealAmount.text.toString().toInt()
-        val aproxAmount : Int = tAproxAmount.text.toString().toInt()
+        val realAmount : Int? = tRealAmount.text.toString().toIntOrNull()
         val description = tDescriptionForm.text.toString()
 
+        val numberItems : Int = savingViewModel.getNumberItems(realAmount).toInt()
+        var aproxAmount = savingViewModel.getAproxAmount(numberItems)
 
         return SavingEntity(null, title, realAmount, aproxAmount, description)
     }
 
-    override fun onFocusChange(view: View?, hasFocus: Boolean) {
-        if(!hasFocus) {
 
-            val realAmount : Int? = if(tRealAmount.text.toString().isEmpty()) 0 else tRealAmount.text.toString().toIntOrNull();
-            val numberItems : Int = savingViewModel.getNumberItems(realAmount).toInt()
-            var aproxAmount = savingViewModel.getAproxAmount(numberItems)
-
-            tAproxAmount.text = aproxAmount.toString()
-        }
-    }
 }
