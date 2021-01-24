@@ -12,7 +12,7 @@ import com.ahuacate.pigs.data.entity.SavingEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [PiggyEntity::class, SavingEntity::class], version = 1, exportSchema = false )
+@Database(entities = [PiggyEntity::class, SavingEntity::class], version = 2, exportSchema = false )
 public abstract class PiggyRoomDB : RoomDatabase() {
 
     abstract fun piggyDao() : PiggyDao
@@ -36,22 +36,22 @@ public abstract class PiggyRoomDB : RoomDatabase() {
                     //add sample savings
                     var saving = SavingEntity()
                     saving.title = "Viaje a madrid"
-                    saving.realAmount = 5000.0
-                    saving.aproxAmount = 5050.0
+                    saving.realAmount = 5000
+                    saving.aproxAmount = 5050
                     saving.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
                     savingDao.insert(saving)
 
                     var savingTwo = SavingEntity()
                     savingTwo.title = "Macbock AIR"
-                    savingTwo.realAmount = 5000.00
-                    savingTwo.aproxAmount = 5050.00
+                    savingTwo.realAmount = 5000
+                    savingTwo.aproxAmount = 5050
                     savingTwo.description = "Quis nostrud exercitation ullamco laboris nisi ut aliquip"
                     savingDao.insert(savingTwo)
 
                     var savingThree = SavingEntity()
                     savingThree.title = "Apartamento en ciudad merliot"
-                    savingThree.realAmount = 200.00
-                    savingThree.aproxAmount = 240.00
+                    savingThree.realAmount = 200
+                    savingThree.aproxAmount = 240
                     savingThree.description = "Duis aute irure dolor in"
                     savingDao.insert(savingThree)
                 }
@@ -72,6 +72,7 @@ public abstract class PiggyRoomDB : RoomDatabase() {
                     "piggy_db"
                 )
                     .addCallback(PiggyRoomDBCallback(scope))
+                    //.fallbackToDestructiveMigrationFrom(1,2)
                     .build()
 
                 INSTANCE = instance

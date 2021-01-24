@@ -15,10 +15,10 @@ class SavingEntity(
     var title : String? = null,
 
     @ColumnInfo(name = "real_amount")
-    var realAmount : Double? = null,
+    var realAmount : Int? = null,
 
     @ColumnInfo(name = "aprox_amount")
-    var aproxAmount : Double? = null,
+    var aproxAmount : Int? = null,
 
     @ColumnInfo(name = "description")
     var description : String? = null
