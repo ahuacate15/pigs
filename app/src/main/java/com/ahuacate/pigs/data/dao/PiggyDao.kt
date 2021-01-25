@@ -14,5 +14,5 @@ interface PiggyDao {
     fun getAll() : Flow<List<PiggyEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(piggyEntity: PiggyEntity)
+    suspend fun insert(piggyEntity: PiggyEntity) : Long
 }

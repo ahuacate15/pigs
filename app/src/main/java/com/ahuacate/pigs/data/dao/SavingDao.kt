@@ -13,7 +13,7 @@ interface SavingDao {
     fun getAll() : Flow<List<SavingEntity>>
 
     @Insert
-    suspend fun insert(savingEntity: SavingEntity)
+    suspend fun insert(savingEntity: SavingEntity) : Long
 
     @Query("DELETE FROM saving")
     suspend fun deleteAll()

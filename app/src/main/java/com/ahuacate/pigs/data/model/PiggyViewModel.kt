@@ -13,7 +13,7 @@ class PiggyViewModel(private val repository : PiggyRepository) : ViewModel() {
     var allPiggies = repository.allPiggies.asLiveData()
 
     fun insert(piggyEntity : PiggyEntity) = viewModelScope.launch {
-        repository.insert(piggyEntity);
+        var id = repository.insert(piggyEntity);
     }
 }
 

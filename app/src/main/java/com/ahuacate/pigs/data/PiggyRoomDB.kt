@@ -7,16 +7,19 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ahuacate.pigs.data.dao.PiggyDao
 import com.ahuacate.pigs.data.dao.SavingDao
+import com.ahuacate.pigs.data.dao.SavingDetailDao
 import com.ahuacate.pigs.data.entity.PiggyEntity
+import com.ahuacate.pigs.data.entity.SavingDetailEntity
 import com.ahuacate.pigs.data.entity.SavingEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [PiggyEntity::class, SavingEntity::class], version = 2, exportSchema = false )
+@Database(entities = [PiggyEntity::class, SavingEntity::class, SavingDetailEntity::class], version = 3, exportSchema = false )
 public abstract class PiggyRoomDB : RoomDatabase() {
 
     abstract fun piggyDao() : PiggyDao
     abstract fun savingDao() : SavingDao
+    abstract fun savingDetailDao() : SavingDetailDao
 
 
     private class PiggyRoomDBCallback(
@@ -71,8 +74,9 @@ public abstract class PiggyRoomDB : RoomDatabase() {
                     PiggyRoomDB::class.java,
                     "piggy_db"
                 )
-                    .addCallback(PiggyRoomDBCallback(scope))
-                    //.fallbackToDestructiveMigrationFrom(1,2)
+                    //.addCallback(PiggyRoomDBCallback(scope))
+                    .fallbackToDestructiveMigrationFrom(1,2)
+                    .fallbackToDestructiveMigrationFrom(2,3)
                     .build()
 
                 INSTANCE = instance

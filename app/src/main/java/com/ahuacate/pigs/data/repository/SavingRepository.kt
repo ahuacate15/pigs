@@ -11,7 +11,7 @@ class SavingRepository(private val savingDao: SavingDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun insert(savingEntity : SavingEntity) {
-        savingDao.insert(savingEntity)
+    suspend fun insert(savingEntity : SavingEntity) : Long {
+        return savingDao.insert(savingEntity)
     }
 }

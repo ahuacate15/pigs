@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.ahuacate.pigs.data.entity.SavingDetailEntity
 import com.ahuacate.pigs.data.entity.SavingEntity
+import com.ahuacate.pigs.data.repository.SavingDetailRepository
 import com.ahuacate.pigs.data.repository.SavingRepository
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -13,12 +15,22 @@ import java.math.RoundingMode
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 
-class SavingViewModel(private val repository : SavingRepository) : ViewModel() {
+class SavingViewModel(private val repository : SavingRepository, private val detailRepository: SavingDetailRepository) : ViewModel() {
 
     var allSaving = repository?.allSaving?.asLiveData()
 
     fun insert(savingEntity: SavingEntity) = viewModelScope.launch {
-        repository.insert(savingEntity)
+        val id = repository.insert(savingEntity)
+
+        var listDetail : MutableList<SavingDetailEntity> = mutableListOf<SavingDetailEntity>()
+        val numberItems = getNumberItems(savingEntity.realAmount).toInt()
+
+        for(sequence in 1..numberItems) {
+            var detail = SavingDetailEntity(null, sequence, false, id)
+            listDetail.add(detail)
+        }
+
+        detailRepository.insertAll(listDetail)
     }
 
     /**
@@ -51,11 +63,11 @@ class SavingViewModel(private val repository : SavingRepository) : ViewModel() {
 
 }
 
-class SavingViewModelFactory(private val repository: SavingRepository) : ViewModelProvider.Factory {
+class SavingViewModelFactory(private val repository: SavingRepository, private val detailRepository: SavingDetailRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(SavingViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SavingViewModel(repository) as T
+            return SavingViewModel(repository, detailRepository) as T
         }
 
         throw IllegalArgumentException("Unknow ViewModel class")

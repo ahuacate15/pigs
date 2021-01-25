@@ -28,7 +28,10 @@ class SavingFormFragment : DialogFragment(), View.OnClickListener {
     val TAG : String = "SavingFormFragment"
 
     private val savingViewModel : SavingViewModel by viewModels {
-        SavingViewModelFactory((activity?.application as PiggyApplication).repository)
+        SavingViewModelFactory(
+            (activity?.application as PiggyApplication).repository,
+            (activity?.application as PiggyApplication).detailRepository
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
