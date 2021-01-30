@@ -37,7 +37,7 @@ class SavingListFragment : Fragment()  {
 
         /* rSavingList is referenced automated by synthetic package */
         val rSavingList = view.findViewById<RecyclerView>(R.id.rSavingList)
-        adapter = SavingListAdapter()
+        adapter = activity?.supportFragmentManager?.let { SavingListAdapter(it) }!!
         rSavingList.adapter = adapter
         rSavingList.layoutManager = LinearLayoutManager(view.context)
 

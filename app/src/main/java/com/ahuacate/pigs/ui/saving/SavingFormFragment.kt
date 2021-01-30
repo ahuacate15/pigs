@@ -15,7 +15,6 @@ import com.ahuacate.pigs.data.PiggyApplication
 import com.ahuacate.pigs.data.entity.SavingEntity
 import com.ahuacate.pigs.data.model.SavingViewModel
 import com.ahuacate.pigs.data.model.SavingViewModelFactory
-import kotlinx.android.synthetic.main.fragment_saving_form.view.*
 
 class SavingFormFragment : DialogFragment(), View.OnClickListener {
 

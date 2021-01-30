@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.ahuacate.pigs.R
 import com.ahuacate.pigs.ui.saving.SavingFormFragment
+import com.ahuacate.pigs.ui.saving.SavingViewFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 
