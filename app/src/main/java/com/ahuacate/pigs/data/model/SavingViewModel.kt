@@ -1,9 +1,6 @@
 package com.ahuacate.pigs.data.model
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ahuacate.pigs.data.entity.SavingDetailEntity
 import com.ahuacate.pigs.data.entity.SavingEntity
 import com.ahuacate.pigs.data.repository.SavingDetailRepository
@@ -32,6 +29,12 @@ class SavingViewModel(private val repository : SavingRepository, private val det
 
         detailRepository.insertAll(listDetail)
     }
+
+    fun findDetailOfSaving(idSavingEntity : Int? = 0) : LiveData<List<SavingDetailEntity>> {
+        return detailRepository.findByIdSaving(idSavingEntity).asLiveData()
+    }
+
+
 
     /**
      * inverse gauss summatory

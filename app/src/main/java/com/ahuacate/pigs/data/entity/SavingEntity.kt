@@ -9,7 +9,7 @@ class SavingEntity(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id_saving")
-    var idSaving : Integer? = null,
+    var idSaving : Int? = null,
 
     @ColumnInfo(name = "title")
     var title : String? = null,

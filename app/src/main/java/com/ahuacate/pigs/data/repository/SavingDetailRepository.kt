@@ -13,7 +13,7 @@ class SavingDetailRepository(private val savingDetailDao: SavingDetailDao) {
         savingDetailDao.insertAll(listDetail)
     }
 
-    fun findByIdSaving(id : Int) : Flow<List<SavingDetailEntity>> {
+    fun findByIdSaving(id : Int?) : Flow<List<SavingDetailEntity>> {
         return savingDetailDao.findByIdSaving(id)
     }
 }
