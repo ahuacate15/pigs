@@ -10,7 +10,7 @@ class SavingDetailEntity (
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id : Integer? = null,
+    var id : Int? = null,
 
     var sequence : Int,
     var selected : Boolean,

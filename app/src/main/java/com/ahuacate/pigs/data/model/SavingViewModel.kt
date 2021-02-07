@@ -30,11 +30,18 @@ class SavingViewModel(private val repository : SavingRepository, private val det
         detailRepository.insertAll(listDetail)
     }
 
-    fun findDetailOfSaving(idSavingEntity : Int? = 0) : LiveData<List<SavingDetailEntity>> {
+    fun findDetailOfSaving(idSavingEntity : Int? = 0) : LiveData<MutableList<SavingDetailEntity>> {
         return detailRepository.findByIdSaving(idSavingEntity).asLiveData()
     }
 
-
+    /**
+     * toogle selected state of detail entity
+     * when selected fields is true, the method will update to false
+     * likewise, when the field is false, the method will be true
+     * */
+    fun updateDetail(entity: SavingDetailEntity) = viewModelScope.launch {
+        detailRepository.update(entity.selected, entity.sequence, entity.idSaving)
+    }
 
     /**
      * inverse gauss summatory

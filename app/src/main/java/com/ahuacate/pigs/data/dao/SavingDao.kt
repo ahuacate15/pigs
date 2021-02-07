@@ -3,6 +3,7 @@ package com.ahuacate.pigs.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.ahuacate.pigs.data.entity.SavingEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -17,4 +18,5 @@ interface SavingDao {
 
     @Query("DELETE FROM saving")
     suspend fun deleteAll()
+
 }

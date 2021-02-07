@@ -1,6 +1,7 @@
 package com.ahuacate.pigs.ui.saving
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +9,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ahuacate.pigs.R
 import com.ahuacate.pigs.data.PiggyApplication
+import com.ahuacate.pigs.data.entity.SavingDetailEntity
 import com.ahuacate.pigs.data.entity.SavingEntity
 import com.ahuacate.pigs.data.model.SavingViewModel
 import com.ahuacate.pigs.data.model.SavingViewModelFactory
+import com.google.android.material.progressindicator.ProgressIndicator
 
 class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), View.OnClickListener {
 
@@ -25,8 +30,10 @@ class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), Vi
     private lateinit var tAmountVF : TextView
     private lateinit var tCollectedAmountVF : TextView
     private lateinit var rSavingItemDetail : RecyclerView
+    private lateinit var progressIndicator : ProgressIndicator
 
     private lateinit var adapter : SavingItemDetailAdapter
+    private lateinit var listData : LiveData<MutableList<SavingDetailEntity>>
 
     private val savingViewModel : SavingViewModel by viewModels {
         SavingViewModelFactory(
@@ -48,15 +55,23 @@ class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), Vi
         tAmountVF = view.findViewById(R.id.tAmountVF)
         tCollectedAmountVF = view.findViewById(R.id.tCollectedAmountVF)
         rSavingItemDetail = view.findViewById(R.id.rSavingItemDetail)
+        progressIndicator = view.findViewById(R.id.progressIndicator)
 
         /* define adapter to show bubbles */
-        adapter = SavingItemDetailAdapter()
+        adapter = SavingItemDetailAdapter(savingViewModel, context)
         rSavingItemDetail.adapter = adapter
         rSavingItemDetail.layoutManager = GridLayoutManager(view.context, 5)
 
-        savingViewModel.findDetailOfSaving(savingEntity.idSaving).observe(viewLifecycleOwner, Observer {
+        listData = savingViewModel.findDetailOfSaving(savingEntity.idSaving)
+
+        listData.observe(viewLifecycleOwner,  Observer {
             list -> adapter.setData(list)
+            listData.removeObservers(viewLifecycleOwner)
+
+            progressIndicator.visibility = View.GONE
+            Log.d("SavingViewFragment", "Actualizando datos");
         })
+
 
         iCloseVF.setOnClickListener(this)
 

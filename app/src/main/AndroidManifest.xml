@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ahuacate.pigs">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".data.PiggyApplication"
         android:allowBackup="true"
@@ -16,6 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
+
 
 </manifest>

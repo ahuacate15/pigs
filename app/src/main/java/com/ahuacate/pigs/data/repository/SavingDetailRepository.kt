@@ -13,7 +13,14 @@ class SavingDetailRepository(private val savingDetailDao: SavingDetailDao) {
         savingDetailDao.insertAll(listDetail)
     }
 
-    fun findByIdSaving(id : Int?) : Flow<List<SavingDetailEntity>> {
+    fun findByIdSaving(id : Int?) : Flow<MutableList<SavingDetailEntity>> {
         return savingDetailDao.findByIdSaving(id)
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun update(selected : Boolean, sequence : Int?, idSaving : Long) : Int {
+        return savingDetailDao.update(selected, sequence, idSaving)
+    }
+
 }
