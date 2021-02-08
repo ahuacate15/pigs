@@ -1,10 +1,6 @@
 package com.ahuacate.pigs.ui.saving
 
 import android.content.Context
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ahuacate.pigs.R
 import com.ahuacate.pigs.data.entity.SavingDetailEntity
 import com.ahuacate.pigs.data.model.SavingViewModel
+import com.ahuacate.pigs.util.SystemCall
 
 class SavingItemDetailAdapter(private val savingViewModel: SavingViewModel, private val context: Context?) : RecyclerView.Adapter<SavingItemDetailAdapter.SavingItemDetailViewHolder>() {
 
     private var list : MutableList<SavingDetailEntity> = ArrayList()
     private val TAG : String = "SavingItemDetailAdapter"
+    private val systemCall : SystemCall = SystemCall(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavingItemDetailViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -50,17 +48,8 @@ class SavingItemDetailAdapter(private val savingViewModel: SavingViewModel, priv
         this.list[position] = entity
         savingViewModel.updateDetail(entity)
         notifyItemChanged(position)
-        vibratePhone()
+        systemCall.vibrate()
 
-    }
-
-    fun vibratePhone() {
-        val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            vibrator.vibrate(200)
-        }
     }
 
     class SavingItemDetailViewHolder(itemView : View, private val context: Context?) : RecyclerView.ViewHolder(itemView) {
