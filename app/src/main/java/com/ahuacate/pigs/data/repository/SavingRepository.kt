@@ -14,4 +14,9 @@ class SavingRepository(private val savingDao: SavingDao) {
     suspend fun insert(savingEntity : SavingEntity) : Long {
         return savingDao.insert(savingEntity)
     }
+
+
+    fun findById(id : Int) : Flow<SavingEntity> {
+        return savingDao.findById(id)
+    }
 }

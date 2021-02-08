@@ -19,4 +19,7 @@ interface SavingDao {
     @Query("DELETE FROM saving")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM saving WHERE id_saving = :idSaving")
+    fun findById(idSaving : Int) : Flow<SavingEntity>
+
 }

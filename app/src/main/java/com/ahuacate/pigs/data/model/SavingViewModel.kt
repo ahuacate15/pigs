@@ -16,6 +16,10 @@ class SavingViewModel(private val repository : SavingRepository, private val det
 
     var allSaving = repository?.allSaving?.asLiveData()
 
+    fun findById(id : Int) : LiveData<SavingEntity> {
+        return repository.findById(id).asLiveData()
+    }
+
     fun insert(savingEntity: SavingEntity) = viewModelScope.launch {
         val id = repository.insert(savingEntity)
 
