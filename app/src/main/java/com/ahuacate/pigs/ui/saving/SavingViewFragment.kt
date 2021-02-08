@@ -21,11 +21,13 @@ import com.ahuacate.pigs.data.entity.SavingDetailEntity
 import com.ahuacate.pigs.data.entity.SavingEntity
 import com.ahuacate.pigs.data.model.SavingViewModel
 import com.ahuacate.pigs.data.model.SavingViewModelFactory
+import com.ahuacate.pigs.util.SystemCall
 import com.google.android.material.progressindicator.ProgressIndicator
 
 class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), View.OnClickListener {
 
     private lateinit var iCloseVF : ImageView
+    private lateinit var iOpenMenuVF : ImageView
     private lateinit var tTitleVF : TextView
     private lateinit var tAmountVF : TextView
     private lateinit var tCollectedAmountVF : TextView
@@ -34,6 +36,7 @@ class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), Vi
 
     private lateinit var adapter : SavingItemDetailAdapter
     private lateinit var listData : LiveData<MutableList<SavingDetailEntity>>
+    private lateinit var systemCall : SystemCall
 
     private val savingViewModel : SavingViewModel by viewModels {
         SavingViewModelFactory(
@@ -49,8 +52,11 @@ class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), Vi
     ): View? {
         val view : View = inflater.inflate(R.layout.fragment_saving_view, container, false)
 
+        systemCall = SystemCall(context)
+
         /* bind UI elements */
         iCloseVF = view.findViewById(R.id.iCloseVF)
+        iOpenMenuVF = view.findViewById(R.id.iOpenMenuVF)
         tTitleVF = view.findViewById(R.id.tTitleVF)
         tAmountVF = view.findViewById(R.id.tAmountVF)
         tCollectedAmountVF = view.findViewById(R.id.tCollectedAmountVF)
@@ -74,7 +80,7 @@ class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), Vi
 
 
         iCloseVF.setOnClickListener(this)
-
+        iOpenMenuVF.setOnClickListener(this)
         setData()
 
         return view
@@ -88,7 +94,11 @@ class SavingViewFragment(val savingEntity : SavingEntity) : DialogFragment(), Vi
     override fun onClick(view: View?) {
         when(view?.id) {
             R.id.iCloseVF -> {
+                systemCall.vibrate()
                 dialog?.dismiss()
+            }
+            R.id.iOpenMenuVF -> {
+                systemCall.vibrate()
             }
         }
     }
