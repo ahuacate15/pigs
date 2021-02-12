@@ -43,8 +43,18 @@ class SavingViewModel(private val repository : SavingRepository, private val det
      * when selected fields is true, the method will update to false
      * likewise, when the field is false, the method will be true
      * */
-    fun updateDetail(entity: SavingDetailEntity) = viewModelScope.launch {
-        detailRepository.update(entity.selected, entity.sequence, entity.idSaving)
+    fun updateDetail(idSaving : Int, detailEntity: SavingDetailEntity) = viewModelScope.launch {
+        //update detail
+        detailRepository.update(detailEntity.selected, detailEntity.sequence, detailEntity.idSaving)
+
+        //add/substract acumulated amount
+        val amount = if(detailEntity.selected) {
+            detailEntity.sequence
+        } else {
+            detailEntity.sequence * -1
+        }
+
+        repository.update(idSaving, amount)
     }
 
     /**
@@ -73,6 +83,15 @@ class SavingViewModel(private val repository : SavingRepository, private val det
 
     fun getAproxAmount(numberItems : Int) : Int {
         return numberItems.absoluteValue * (numberItems.absoluteValue + 1) / 2
+    }
+
+    /**
+     * get accumulated % of saving
+     * $1000.00/$5050.00 => 19.08% accumulated
+     * $ 505.00/$5050.00 => 10.00% accumulated
+     */
+    fun getPercent(total : Int, acumulated : Int) : Float {
+        return 100 * acumulated.toFloat() / total.toFloat();
     }
 
 }

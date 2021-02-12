@@ -25,6 +25,7 @@ class SavingViewActivity : AppCompatActivity() {
     private lateinit var tCollectedAmountVF : TextView
     private lateinit var rSavingItemDetail : RecyclerView
     private lateinit var progressIndicator : ProgressIndicator
+    private lateinit var progressIndicatorAccumulated : ProgressIndicator
 
     private lateinit var adapter : SavingItemDetailAdapter
     private lateinit var listData : LiveData<MutableList<SavingDetailEntity>>
@@ -51,16 +52,22 @@ class SavingViewActivity : AppCompatActivity() {
         tAmountVF = findViewById(R.id.tAmountVF)
         tCollectedAmountVF = findViewById(R.id.tCollectedAmountVF)
         rSavingItemDetail = findViewById(R.id.rSavingItemDetail)
-        progressIndicator = findViewById(R.id.progressIndicator)
+        progressIndicator = findViewById(R.id.progressIndicator) //show progress when interface in loading
+        progressIndicatorAccumulated = findViewById(R.id.progressIndicatorAccumulated) //show accumulated percent from saving
 
-        /* define adapter to show bubbles */
-        adapter = SavingItemDetailAdapter(savingViewModel, this)
+
+        /* define adapter to show bubbles, constructor needs savingEntity */
+        adapter = SavingItemDetailAdapter(id, savingViewModel, this)
         rSavingItemDetail.adapter = adapter
         rSavingItemDetail.layoutManager = GridLayoutManager(this, 5)
+
 
         /* load entity by ID */
         savingViewModel.findById(id).observe(this, Observer {
             entity -> setData(entity)
+
+            //calculate accumulated percent but not show, until the detail is loaded
+            progressIndicatorAccumulated.progress = savingViewModel.getPercent(entity.aproxAmount, entity.acumulatedAmount).toInt()
         })
 
         /* load detail from entity  */
@@ -70,8 +77,9 @@ class SavingViewActivity : AppCompatActivity() {
             list -> adapter.setData(list)
             listData.removeObservers(this)
 
+            //hide progress bar and show "accumulated percent" bar
             progressIndicator.visibility = View.GONE
-            Log.d("SavingViewFragment", "Actualizando datos");
+            progressIndicatorAccumulated.visibility = View.VISIBLE
         })
 
     }
@@ -80,6 +88,7 @@ class SavingViewActivity : AppCompatActivity() {
     private fun setData(savingEntity: SavingEntity) {
         //tTitleVF.text = savingEntity.title
         tAmountVF.text = savingEntity.aproxAmount.toString()
+        tCollectedAmountVF.text = savingEntity.acumulatedAmount.toString()
     }
 
 

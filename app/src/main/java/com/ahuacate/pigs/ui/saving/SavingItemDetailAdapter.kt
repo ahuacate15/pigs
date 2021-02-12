@@ -10,10 +10,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ahuacate.pigs.R
 import com.ahuacate.pigs.data.entity.SavingDetailEntity
+import com.ahuacate.pigs.data.entity.SavingEntity
 import com.ahuacate.pigs.data.model.SavingViewModel
 import com.ahuacate.pigs.util.SystemCall
 
-class SavingItemDetailAdapter(private val savingViewModel: SavingViewModel, private val context: Context) : RecyclerView.Adapter<SavingItemDetailAdapter.SavingItemDetailViewHolder>() {
+class SavingItemDetailAdapter(private val idSaving : Int, private val savingViewModel: SavingViewModel, private val context: Context) : RecyclerView.Adapter<SavingItemDetailAdapter.SavingItemDetailViewHolder>() {
 
     private var list : MutableList<SavingDetailEntity> = ArrayList()
     private val TAG : String = "SavingItemDetailAdapter"
@@ -30,10 +31,10 @@ class SavingItemDetailAdapter(private val savingViewModel: SavingViewModel, priv
     }
 
     override fun onBindViewHolder(holder: SavingItemDetailViewHolder, position: Int) {
-        var entity = list[position]
-        holder.bind(entity)
+        var detailEntity = list[position]
+        holder.bind(detailEntity)
         holder.itemView.setOnClickListener(View.OnClickListener {
-            toogleSelected(entity, holder.adapterPosition)
+            toogleSelected(detailEntity, holder.adapterPosition)
         })
     }
 
@@ -42,12 +43,10 @@ class SavingItemDetailAdapter(private val savingViewModel: SavingViewModel, priv
         notifyDataSetChanged()
     }
 
-    private fun toogleSelected(entity : SavingDetailEntity, position : Int) {
-
-
-        entity.selected = !entity.selected
-        this.list[position] = entity
-        savingViewModel.updateDetail(entity)
+    private fun toogleSelected(detailEntity : SavingDetailEntity, position : Int) {
+        detailEntity.selected = !detailEntity.selected
+        this.list[position] = detailEntity
+        savingViewModel.updateDetail(idSaving, detailEntity)
         notifyItemChanged(position)
         systemCall.vibrate()
 
@@ -62,7 +61,7 @@ class SavingItemDetailAdapter(private val savingViewModel: SavingViewModel, priv
             tAmountBubble.text = entity.sequence.toString()
 
             if(entity.selected) {
-                tAmountBubble.background = ContextCompat.getDrawable(context, R.drawable.s_circle_selected) 
+                tAmountBubble.background = ContextCompat.getDrawable(context, R.drawable.s_circle_selected)
                 tAmountBubble.setTextColor(Color.WHITE)
             } else {
                 tAmountBubble.background = ContextCompat.getDrawable(context, R.drawable.s_circle)

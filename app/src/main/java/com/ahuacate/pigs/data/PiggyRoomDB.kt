@@ -14,7 +14,7 @@ import com.ahuacate.pigs.data.entity.SavingEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [PiggyEntity::class, SavingEntity::class, SavingDetailEntity::class], version = 3, exportSchema = false )
+@Database(entities = [PiggyEntity::class, SavingEntity::class, SavingDetailEntity::class], version = 5, exportSchema = false )
 public abstract class PiggyRoomDB : RoomDatabase() {
 
     abstract fun piggyDao() : PiggyDao
@@ -31,32 +31,7 @@ public abstract class PiggyRoomDB : RoomDatabase() {
             /* to populate database */
             INSTANCE?.let {
                 database -> scope.launch {
-                    var savingDao = database.savingDao()
 
-                    //delete all content of saving
-                    savingDao.deleteAll()
-
-                    //add sample savings
-                    var saving = SavingEntity()
-                    saving.title = "Viaje a madrid"
-                    saving.realAmount = 5000
-                    saving.aproxAmount = 5050
-                    saving.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-                    savingDao.insert(saving)
-
-                    var savingTwo = SavingEntity()
-                    savingTwo.title = "Macbock AIR"
-                    savingTwo.realAmount = 5000
-                    savingTwo.aproxAmount = 5050
-                    savingTwo.description = "Quis nostrud exercitation ullamco laboris nisi ut aliquip"
-                    savingDao.insert(savingTwo)
-
-                    var savingThree = SavingEntity()
-                    savingThree.title = "Apartamento en ciudad merliot"
-                    savingThree.realAmount = 200
-                    savingThree.aproxAmount = 240
-                    savingThree.description = "Duis aute irure dolor in"
-                    savingDao.insert(savingThree)
                 }
             }
         }
@@ -77,6 +52,7 @@ public abstract class PiggyRoomDB : RoomDatabase() {
                     //.addCallback(PiggyRoomDBCallback(scope))
                     .fallbackToDestructiveMigrationFrom(1,2)
                     .fallbackToDestructiveMigrationFrom(2,3)
+                    .fallbackToDestructiveMigrationFrom(3,4)
                     .build()
 
                 INSTANCE = instance

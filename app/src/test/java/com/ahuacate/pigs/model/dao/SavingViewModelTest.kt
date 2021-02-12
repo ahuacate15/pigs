@@ -2,6 +2,7 @@ package com.ahuacate.pigs.model.dao
 
 import android.util.Log
 import com.ahuacate.pigs.data.model.SavingViewModel
+import com.ahuacate.pigs.data.repository.SavingDetailRepository
 import com.ahuacate.pigs.data.repository.SavingRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -19,9 +20,12 @@ class SavingViewModelTest {
     @Mock
     private lateinit var savingRepository : SavingRepository
 
+    @Mock
+    private lateinit var detailRepository: SavingDetailRepository
+
     @Before
     fun setUp() {
-        savingViewModel = SavingViewModel(savingRepository)
+        savingViewModel = SavingViewModel(savingRepository, detailRepository)
     }
 
     @Test
@@ -71,5 +75,12 @@ class SavingViewModelTest {
     fun `Apply absolute value to negative number of gauss sum`() {
         assertEquals(105, savingViewModel.getAproxAmount(savingViewModel.getNumberItems(-105).toInt()))
         assertEquals(5050, savingViewModel.getAproxAmount(savingViewModel.getNumberItems(-5050).toInt()))
+    }
+
+    @Test
+    fun `Calculate accumulated percent of saving`() {
+        assertEquals(10.0f, savingViewModel.getPercent(5050, 505))
+        assertEquals(50.0f, savingViewModel.getPercent(5050, 2525))
+        assertEquals(100.0f, savingViewModel.getPercent(5050, 5050))
     }
 }

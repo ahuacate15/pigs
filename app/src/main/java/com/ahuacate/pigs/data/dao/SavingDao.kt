@@ -22,4 +22,6 @@ interface SavingDao {
     @Query("SELECT * FROM saving WHERE id_saving = :idSaving")
     fun findById(idSaving : Int) : Flow<SavingEntity>
 
+    @Query("UPDATE saving SET acumulated_amount = acumulated_amount + :acumulatedAmount WHERE id_saving = :idSaving")
+    suspend fun updateAccumulate(idSaving : Int, acumulatedAmount : Int)
 }

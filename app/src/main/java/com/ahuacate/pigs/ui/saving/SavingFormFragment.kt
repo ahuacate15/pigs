@@ -86,13 +86,13 @@ class SavingFormFragment : DialogFragment(), View.OnClickListener {
         }
 
         val title : String = tTitleForm.text.toString()
-        val realAmount : Int? = tRealAmount.text.toString().toIntOrNull()
+        val realAmount : Int = tRealAmount.text.toString().toInt()
         val description = tDescriptionForm.text.toString()
 
         val numberItems : Int = savingViewModel.getNumberItems(realAmount).toInt()
         var aproxAmount = savingViewModel.getAproxAmount(numberItems)
 
-        return SavingEntity(null, title, realAmount, aproxAmount, description)
+        return SavingEntity(null, title, realAmount, aproxAmount, description, 0)
     }
 
 

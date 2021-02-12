@@ -13,7 +13,6 @@ interface SavingDetailDao {
     @Insert
     suspend fun insertAll(listDetail : List<SavingDetailEntity>)
 
-
     @Query("SELECT * FROM saving_detail WHERE id_saving = :id ORDER BY sequence")
     fun findByIdSaving(id : Int?) : Flow<MutableList<SavingDetailEntity>>
 

@@ -19,4 +19,10 @@ class SavingRepository(private val savingDao: SavingDao) {
     fun findById(id : Int) : Flow<SavingEntity> {
         return savingDao.findById(id)
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun update(idSaving : Int, acumulatedAmount : Int) {
+        return savingDao.updateAccumulate(idSaving, acumulatedAmount)
+    }
 }
