@@ -13,7 +13,7 @@ import com.ahuacate.pigs.data.entity.SavingEntity
 
 class SavingListAdapter(
     private val context : Context,
-    //private val onItemClicked : (SavingEntity) -> Unit,
+    private val onItemClicked : (View, SavingEntity) -> Unit,
     private val onItemLongClicked : (View) -> Boolean
 ) : RecyclerView.Adapter<SavingListAdapter.SavingListViewHolder>() {
 
@@ -26,7 +26,7 @@ class SavingListAdapter(
     ): SavingListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_saving_item, parent, false)
-        return SavingListViewHolder(view, context) { onItemLongClicked(view) }
+        return SavingListViewHolder(view, context, onItemClicked, onItemLongClicked)
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +36,7 @@ class SavingListAdapter(
     override fun onBindViewHolder(holder: SavingListViewHolder, position: Int) {
         val saving = listSaving[position]
         holder.bind(saving)
-        //holder.itemView.setOnClickListener{ onItemLongClicked(saving) }
+        holder.itemView.setOnClickListener { onItemClicked(holder.itemView, saving) }
         holder.itemView.setOnLongClickListener { onItemLongClicked(holder.itemView) }
     }
 
@@ -48,7 +48,7 @@ class SavingListAdapter(
     class SavingListViewHolder(
         itemView: View,
         private val context: Context,
-        //private val onItemClicked: (SavingEntity) -> Unit//,
+        private val onItemClicked: (View, SavingEntity) -> Unit,
         private val onItemLongClicked: (View) -> Boolean
     ) : RecyclerView.ViewHolder(itemView) {
 
@@ -63,15 +63,7 @@ class SavingListAdapter(
             tAmountProgressSaving.text = "$${savingEntity.realAmount} de $${savingEntity.aproxAmount}"
             tDescriptionSaving.text = savingEntity.description
 
-            itemView.setOnClickListener {
-                Log.d(TAG, "Item clickqueado: " + savingEntity.idSaving)
-
-                val intent : Intent = Intent(context, SavingViewActivity::class.java)
-                intent.putExtra("id", savingEntity.idSaving)
-                context.startActivity(intent)
-            }
-
-            //itemView.setOnClickListener { onItemClicked(savingEntity) }
+            itemView.setOnClickListener { onItemClicked(itemView, savingEntity) }
             itemView.setOnLongClickListener { onItemLongClicked(itemView) }
         }
     }
