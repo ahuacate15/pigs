@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ahuacate.pigs.R
 import com.ahuacate.pigs.data.entity.SavingEntity
 
-class SavingListAdapter(private val context : Context) : RecyclerView.Adapter<SavingListAdapter.SavingListViewHolder>() {
+class SavingListAdapter(
+    private val context : Context,
+    //private val onItemClicked : (SavingEntity) -> Unit,
+    private val onItemLongClicked : (View) -> Boolean
+) : RecyclerView.Adapter<SavingListAdapter.SavingListViewHolder>() {
 
     private var listSaving : List<SavingEntity> = ArrayList()
     private val TAG : String = "SavingListAdapter";
@@ -23,7 +26,7 @@ class SavingListAdapter(private val context : Context) : RecyclerView.Adapter<Sa
     ): SavingListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_saving_item, parent, false)
-        return SavingListViewHolder(view, context)
+        return SavingListViewHolder(view, context) { onItemLongClicked(view) }
     }
 
     override fun getItemCount(): Int {
@@ -33,6 +36,8 @@ class SavingListAdapter(private val context : Context) : RecyclerView.Adapter<Sa
     override fun onBindViewHolder(holder: SavingListViewHolder, position: Int) {
         val saving = listSaving[position]
         holder.bind(saving)
+        //holder.itemView.setOnClickListener{ onItemLongClicked(saving) }
+        holder.itemView.setOnLongClickListener { onItemLongClicked(holder.itemView) }
     }
 
     fun setData(listSaving : List<SavingEntity>) {
@@ -40,7 +45,12 @@ class SavingListAdapter(private val context : Context) : RecyclerView.Adapter<Sa
         notifyDataSetChanged()
     }
 
-    class SavingListViewHolder(itemView : View, private val context : Context) : RecyclerView.ViewHolder(itemView) {
+    class SavingListViewHolder(
+        itemView: View,
+        private val context: Context,
+        //private val onItemClicked: (SavingEntity) -> Unit//,
+        private val onItemLongClicked: (View) -> Boolean
+    ) : RecyclerView.ViewHolder(itemView) {
 
         private val TAG : String = "SavingListViewHolder";
         private val tTitleSaving : TextView = itemView.findViewById(R.id.tTitleSaving)
@@ -60,6 +70,9 @@ class SavingListAdapter(private val context : Context) : RecyclerView.Adapter<Sa
                 intent.putExtra("id", savingEntity.idSaving)
                 context.startActivity(intent)
             }
+
+            //itemView.setOnClickListener { onItemClicked(savingEntity) }
+            itemView.setOnLongClickListener { onItemLongClicked(itemView) }
         }
     }
 }
